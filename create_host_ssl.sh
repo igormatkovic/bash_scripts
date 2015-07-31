@@ -51,8 +51,9 @@ server {
 
     client_max_body_size 100m;
 
-    location ~ \.php$ { 
+    location ~ \.php$ {
         fastcgi_param PHP_VALUE "newrelic.appname=$1";
+        fastcgi_param PHP_VALUE "newrelic.capture_params=true";
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
