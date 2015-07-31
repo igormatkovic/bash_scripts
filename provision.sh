@@ -138,8 +138,28 @@ service memcached restart
 
 
 
-# Install &amp; Configure Mongo
+# Install Node
 
+apt-get install -y nodejs
+
+# Install Grunt CLI & Gulp
+
+npm install -g pm2
+npm install -g grunt-cli
+npm install -g gulp
+
+
+# Install & Configure Beanstalk
+
+apt-get install -y beanstalkd
+sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd
+sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
+/etc/init.d/beanstalkd start
+
+
+
+
+# Install &amp; Configure Mongo
 
 apt-get install -y memcached
 sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/memcached.conf
