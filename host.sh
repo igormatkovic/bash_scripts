@@ -19,7 +19,7 @@
 
 block="server {
     listen 80;
-    server_name $1;
+    server_name $1 www.$1;
     root \"/var/www/domains/$2\";
 
     index index.html index.htm index.php;
