@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+#!/usr/bin/env bash
+
+#
+# Create a new  Website
+#
+#
+#
+#  sh host.sh example.com example
+#
+# params:
+#
+#   - server_name: (example.com)
+#   - path: (example_folder)
+#
+#
+
+
 block="server {
     listen 80;
     server_name $1;

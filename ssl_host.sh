@@ -8,6 +8,9 @@
 # /var/www/certs/example.com.crt
 # /var/www/certs/example.com.key
 #
+#
+#  sh ssl_host.sh example.com example
+#
 # params:
 #
 #   - server_name: (example.com)
