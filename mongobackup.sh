@@ -10,4 +10,4 @@ mkdir /var/www/backup/db/$1
 mongodump -d $1 -o /var/www/backup/tmp/$1
 
 #Tar it with the Date Name
-tar -zcvf /var/www/backup/db/$1/${backup_name}.tar.gz /var/www/backup/tmp/$1
+cd /var/www/backup/tmp/ && tar -zcvf /var/www/backup/db/$1/${backup_name}.tar.gz $1
