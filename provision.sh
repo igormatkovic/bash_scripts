@@ -4,7 +4,7 @@
 # Server Provision Script
 #
 # run:
-# sh install.sh $myhostname $mysql_password
+# sh provision.sh $myhostname $mysql_password
 #
 #
 #
@@ -95,7 +95,7 @@ sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php5/cli/php.ini
 
 
 
-# Install Nginx &amp; PHP-FPM & Mongo
+# Install Nginx & PHP-FPM & Mongo
 
 apt-get install -y nginx php5-fpm mongodb-org
 
@@ -122,19 +122,10 @@ sed -i "s/worker_processes.*/worker_processes auto;/" /etc/nginx/nginx.conf
 sed -i "s/# multi_accept.*/multi_accept on;/" /etc/nginx/nginx.conf
 
 
-# Restart Nginx &amp; PHP-FPM Services
+# Restart Nginx & PHP-FPM Services
 
 service php5-fpm restart
 service nginx restart
-
-
-
-
-# Install &amp; Configure Memcached
-
-apt-get install -y memcached
-sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/memcached.conf
-service memcached restart
 
 
 
@@ -159,7 +150,7 @@ sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 
 
 
-# Install &amp; Configure Mongo
+# Install & Configure Memcached
 
 apt-get install -y memcached
 sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/memcached.conf
@@ -171,7 +162,6 @@ service memcached restart
 update-rc.d memcached defaults
 update-rc.d nginx defaults
 update-rc.d php5-fpm defaults
-update-rc.d mongo defaults
 
 
 if [ ! -v "$2" ]
