@@ -10,6 +10,8 @@
 #
 # Upgrade The Base Packages
 
+
+
 apt-get update
 apt-get upgrade -y
 
@@ -162,6 +164,67 @@ service memcached restart
 update-rc.d memcached defaults
 update-rc.d nginx defaults
 update-rc.d php5-fpm defaults
+
+
+
+
+# Install Default Admin Stuff
+
+mkdir -p /var/www/domains/system/
+mkdir -p /var/www/domains/system/{memcache_admin,phpmyadmin,rock_mongo}
+
+
+# Install Memcache Admin
+cd /var/www/domains/system/memcache
+wget http://phpmemcacheadmin.googlecode.com/files/phpMemcachedAdmin-1.2.2-r262.tar.gz
+tar -zxvf phpMemcachedAdmin-1.2.2-r262.tar.gz
+
+# Install PHPMyAdmin Admin
+cd /var/www/domains/system/phpmyadmin
+wget https://files.phpmyadmin.net/phpMyAdmin/4.4.12/phpMyAdmin-4.4.12-all-languages.zip
+unzip phpMyAdmin-4.4.12-all-languages.zip
+mv phpMyAdmin-4.4.12-all-languages/* ./
+
+
+
+echo "Please Enter a password for MongoDB (user will be admin)"
+read mongopassword
+
+
+# Install Mongo Admin
+cd /var/www/domains/system/rock_mongo
+git clone https://github.com/iwind/rockmongo.git .
+sed -i "s/$MONGO[\"servers\"][$i][\"control_users\"][\"admin\"].*/$MONGO[\"servers\"][$i][\"control_users\"][\"admin\"] = \"$mongopassword\";/" /var/www/domains/system/rock_mongo/config.php
+
+
+
+# Create Hosts
+sh host.sh memcache.$1.secure system/memcache_admin
+sh host.sh pma.$1.secure system/phpmyadmin
+sh host.sh mongo.$1.secure system/rock_mongo
+
+#Get IP address and print out details
+IPADDRES=$(curl ipecho.net/plain)
+
+
+echo ".........................................."
+echo
+echo "Instalation completed"
+echo
+echo ".........................................."
+echo
+echo "For extra security, phpmyadmin, memcache admin and rock mongo have been installed under non public domains"
+echo "To enable them please add the following line to your /etc/hosts file"
+echo
+
+echo ".........................................."
+echo "$IPADDRES memcache.$1.secure pma.$1.secure mongo.$1.secure"
+echo ".........................................."
+
+
+
+
+
 
 
 if [ ! -v "$2" ]
