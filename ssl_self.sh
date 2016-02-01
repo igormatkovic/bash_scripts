@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 mkdir /etc/nginx/ssl 2>/dev/null
-openssl genrsa -out "/var/www/certs/self_$1.key" 1024 2>/dev/null
+openssl genrsa -out "/etc/nginx/ssl/self_$1.key" 1024 2>/dev/null
 openssl req -new -key /etc/nginx/ssl/self_$1.key -out /etc/nginx/ssl/self_$1.csr -subj "/CN=$1/O=Cod3.me/C=UK" 2>/dev/null
 openssl x509 -req -days 365 -in /etc/nginx/ssl/self_$1.csr -signkey /etc/nginx/ssl/self_$1.key -out /etc/nginx/ssl/self_$1.crt 2>/dev/null
 
