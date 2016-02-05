@@ -225,6 +225,15 @@ echo ".........................................."
 
 
 
+echo ".........................................."
+echo
+echo "Setting up Custom Aliases"
+echo
+echo ".........................................."
+echo ForceCommand $PWD'/aliases.sh' >> /etc/ssh/sshd_config
+
+chmod +x $PWD'/aliases.sh'
+
 
 
 if [ ! -v "$2" ]
