@@ -2,39 +2,18 @@
 
 #
 # Create a new SSL Website with certificates
-#
-# Make sure the SSL cert has the same name as the server_name.
-# for example.com the certs should be:
-# /var/www/certs/example.com.crt
-# /var/www/certs/example.com.key
-#
-#
-#  sh ssl_host.sh example.com example
-#
-# params:
-#
-#   - server_name: (example.com)
-#   - path: (example_folder)
-#
-#
+#!/usr/bin/env bash
+
+mkdir /etc/nginx/ssl 2>/dev/null
+openssl genrsa -out "/var/www/certs/etc/nginx/ssl/$1.key" 1024 2>/dev/null
+openssl req -new -key /var/www/certs/$1.key -out /var/www/certs/$1.csr -subj "/CN=$1/O=Vagrant/C=UK" 2>/dev/null
+openssl x509 -req -days 365 -in /var/www/certs/$1.csr -signkey /var/www/certs/$1.key -out /var/www/certs/$1.crt 2>/dev/null
 
 block="server {
-    listen 80;
-    server_name $1 www.$1;
-    return 301 https://$1$request_uri;
-}
-
-server {
-    listen 443;
+    listen ${3:-80};
+    listen ${4:-443} ssl;
     server_name $1 www.$1;
     root \"/var/www/domains/$2\";
-
-
-    ssl on;
-    ssl_certificate /var/www/certs/$1.crt;
-    ssl_certificate_key /var/www/certs/$1.key;
-
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     index index.html index.htm index.php;
 
@@ -52,8 +31,6 @@ server {
 
     sendfile off;
 
-    client_max_body_size 100m;
-
     location ~ \.php$ {
         include fastcgi_params;
         fastcgi_param PHP_VALUE \"newrelic.appname=$1\";
@@ -69,6 +46,9 @@ server {
     location ~ /\.ht {
         deny all;
     }
+
+    ssl_certificate     /var/www/certs/$1.crt;
+    ssl_certificate_key /var/www/certs/$1.key;
 }
 "
 
