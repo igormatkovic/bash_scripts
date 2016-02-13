@@ -4,8 +4,8 @@
 # Create a new SSL Website with certificates
 #!/usr/bin/env bash
 
-mkdir /etc/nginx/ssl 2>/dev/null
-openssl genrsa -out "/var/www/certs/etc/nginx/ssl/$1.key" 1024 2>/dev/null
+mkdir /var/www/certs/ 2>/dev/null
+openssl genrsa -out "/var/www/certs/$1.key" 1024 2>/dev/null
 openssl req -new -key /var/www/certs/$1.key -out /var/www/certs/$1.csr -subj "/CN=$1/O=Vagrant/C=UK" 2>/dev/null
 openssl x509 -req -days 365 -in /var/www/certs/$1.csr -signkey /var/www/certs/$1.key -out /var/www/certs/$1.crt 2>/dev/null
 
